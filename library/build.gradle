@@ -1,0 +1,50 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+group = 'com.github.richard-muvirimi'
+version = '1.0.3'
+
+android {
+    compileSdkVersion 33
+    buildToolsVersion '33.0.0'
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 33
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    namespace 'com.android.timezonepicker'
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/src'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.richard-muvirimi'
+                artifactId = 'com.android.timezonepicker'
+                version = '1.0.3'
+            }
+        }
+    }
+}
