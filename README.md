@@ -1,6 +1,6 @@
 # Android Timezone Picker
 
-![Release](https://jitpack.io/v/richard-muvirimi/android-timezone-selector.svg)
+![Release](https://jitpack.io/v/richard-muvirimi/android-timezone-picker.svg)
 
 An android timezone picker implementation that is based
 on [Google's](https://android.googlesource.com/platform/frameworks/opt/timezonepicker)

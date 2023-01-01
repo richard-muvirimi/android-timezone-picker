@@ -1,70 +1,40 @@
 import org.ajoberstar.grgit.Grgit
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-plugins {
-    id 'com.android.application' version '7.3.1' apply false
-    id 'com.android.library' version '7.3.1' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.0' apply false
-    id 'org.ajoberstar.grgit' version '5.0.0' apply false
-    id "de.undercouch.download" version "5.3.0"
+buildscript {
+    ext.kotlin_version = '1.8.0'
+
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenLocal()
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath 'com.google.gms:google-services:4.3.14'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.ajoberstar.grgit:grgit-gradle:5.0.0"
+        classpath "de.undercouch:gradle-download-task:5.3.0"
+    }
 }
 
-ext.kotlin_version = '1.7.20'
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        google()
+    }
+}
+
+ext.kotlin_version = '1.8.0'
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-gradle.beforeProject { project ->
-    if ("$project".contains(":library")) {
-        File targetDir = new File(rootProject.rootDir, '/library/src/main')
-
-        // Clone Base Library
-        if (!(new File(targetDir, "res")).exists() || !(new File(targetDir, "src")).exists()) {
-            Grgit.clone {
-                dir = targetDir
-                uri = 'https://android.googlesource.com/platform/frameworks/opt/timezonepicker'
-            }
-        } else {
-            def grgit = Grgit.open(dir: targetDir)
-            grgit.fetch()
-            grgit.pull()
-            grgit.close()
-        }
-
-        // Alter layout resource files
-        File layoutDir = new File(rootProject.rootDir, '/library/src/main/res/layout')
-
-        if (layoutDir.exists()) {
-            layoutDir.listFiles().each { file ->
-                {
-                    if (file.isFile()) {
-                        def contents = file.getText()
-
-                        contents = contents.replaceAll("(\\<\\/?)TextView(\\>?)", '$1androidx.appcompat.widget.AppCompatTextView$2')
-                        contents = contents.replaceAll("(\\<\\/?)LinearLayout(\\>?)", '$1androidx.appcompat.widget.LinearLayoutCompat$2')
-                        contents = contents.replaceAll("(\\<\\/?)AutoCompleteTextView(\\>?)", '$1androidx.appcompat.widget.AppCompatAutoCompleteTextView$2')
-                        contents = contents.replaceAll("(\\<\\/?)ImageButton(\\>?)", '$1androidx.appcompat.widget.AppCompatImageButton$2')
-
-                        // remove background
-                        contents = contents.replaceAll("(\\<ListView[\\w\\W]*\\n)\\s*android:background.*\\s([\\w\\W]*\\<\\/ListView\\>)", '$1$2')
-
-                        file.write(contents)
-                    }
-                }
-            }
-        }
-
-        // Download timezone data files
-        download.run {
-            src([
-                'https://raw.githubusercontent.com/eggert/tz/main/backward',
-                'https://raw.githubusercontent.com/eggert/tz/main/zone.tab'
-            ])
-            dest new File(rootProject.rootDir, '/library/src/main/assets')
-            onlyIfModified true
-        }
-    }
 }
 
 
