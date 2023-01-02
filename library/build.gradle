@@ -1,5 +1,11 @@
-apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
+import org.ajoberstar.grgit.Grgit
+
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+    id "org.ajoberstar.grgit"
+    id "de.undercouch.download"
+}
 
 group = 'com.github.richard-muvirimi'
 version = '1.0.0'
@@ -45,6 +51,58 @@ afterEvaluate {
                 artifactId = 'timezonepicker'
                 version = '1.0.0'
             }
+        }
+    }
+}
+
+gradle.beforeProject { project ->
+    if ("$project".contains(":library")) {
+        File targetDir = new File(rootProject.rootDir, '/library/src/main')
+
+        // Clone Base Library
+        if (!(new File(targetDir, "res")).exists() || !(new File(targetDir, "src")).exists()) {
+            Grgit.clone {
+                dir = targetDir
+                uri = 'https://android.googlesource.com/platform/frameworks/opt/timezonepicker'
+            }
+        } else {
+            def grgit = Grgit.open(dir: targetDir)
+            grgit.fetch()
+            grgit.pull()
+            grgit.close()
+        }
+
+        // Alter layout resource files
+        File layoutDir = new File(rootProject.rootDir, '/library/src/main/res/layout')
+
+        if (layoutDir.exists()) {
+            layoutDir.listFiles().each { file ->
+                {
+                    if (file.isFile()) {
+                        def contents = file.getText()
+
+                        contents = contents.replaceAll("(\\<\\/?)TextView(\\>?)", '$1androidx.appcompat.widget.AppCompatTextView$2')
+                        contents = contents.replaceAll("(\\<\\/?)LinearLayout(\\>?)", '$1androidx.appcompat.widget.LinearLayoutCompat$2')
+                        contents = contents.replaceAll("(\\<\\/?)AutoCompleteTextView(\\>?)", '$1androidx.appcompat.widget.AppCompatAutoCompleteTextView$2')
+                        contents = contents.replaceAll("(\\<\\/?)ImageButton(\\>?)", '$1androidx.appcompat.widget.AppCompatImageButton$2')
+
+                        // remove background
+                        contents = contents.replaceAll("(\\<ListView[\\w\\W]*\\n)\\s*android:background.*\\s([\\w\\W]*\\<\\/ListView\\>)", '$1$2')
+
+                        file.write(contents)
+                    }
+                }
+            }
+        }
+
+        // Download timezone data files
+        download.run {
+            src([
+                    'https://raw.githubusercontent.com/eggert/tz/main/backward',
+                    'https://raw.githubusercontent.com/eggert/tz/main/zone.tab'
+            ])
+            dest new File(rootProject.rootDir, '/library/src/main/assets')
+            onlyIfModified true
         }
     }
 }
