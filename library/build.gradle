@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 group = 'com.github.richard-muvirimi'
-version = '1.0.3'
+version = '1.0.0'
 
 android {
     compileSdkVersion 33
@@ -43,7 +43,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.richard-muvirimi'
                 artifactId = 'timezonepicker'
-                version = '1.0.3'
+                version = '1.0.0'
             }
         }
     }
