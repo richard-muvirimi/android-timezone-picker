@@ -6,7 +6,6 @@
 /captures
 .externalNativeBuild
 .cxx
-gradlew*
 gradle/*/*.jar
 
 # Built application files
