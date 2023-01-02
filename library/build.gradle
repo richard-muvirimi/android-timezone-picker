@@ -77,20 +77,18 @@ gradle.beforeProject { project ->
 
         if (layoutDir.exists()) {
             layoutDir.listFiles().each { file ->
-                {
-                    if (file.isFile()) {
-                        def contents = file.getText()
+                if (file.isFile()) {
+                    def contents = file.getText()
 
-                        contents = contents.replaceAll("(\\<\\/?)TextView(\\>?)", '$1androidx.appcompat.widget.AppCompatTextView$2')
-                        contents = contents.replaceAll("(\\<\\/?)LinearLayout(\\>?)", '$1androidx.appcompat.widget.LinearLayoutCompat$2')
-                        contents = contents.replaceAll("(\\<\\/?)AutoCompleteTextView(\\>?)", '$1androidx.appcompat.widget.AppCompatAutoCompleteTextView$2')
-                        contents = contents.replaceAll("(\\<\\/?)ImageButton(\\>?)", '$1androidx.appcompat.widget.AppCompatImageButton$2')
+                    contents = contents.replaceAll("(\\<\\/?)TextView(\\>?)", '$1androidx.appcompat.widget.AppCompatTextView$2')
+                    contents = contents.replaceAll("(\\<\\/?)LinearLayout(\\>?)", '$1androidx.appcompat.widget.LinearLayoutCompat$2')
+                    contents = contents.replaceAll("(\\<\\/?)AutoCompleteTextView(\\>?)", '$1androidx.appcompat.widget.AppCompatAutoCompleteTextView$2')
+                    contents = contents.replaceAll("(\\<\\/?)ImageButton(\\>?)", '$1androidx.appcompat.widget.AppCompatImageButton$2')
 
-                        // remove background
-                        contents = contents.replaceAll("(\\<ListView[\\w\\W]*\\n)\\s*android:background.*\\s([\\w\\W]*\\<\\/ListView\\>)", '$1$2')
+                    // remove background
+                    contents = contents.replaceAll("(\\<ListView[\\w\\W]*\\n)\\s*android:background.*\\s([\\w\\W]*\\<\\/ListView\\>)", '$1$2')
 
-                        file.write(contents)
-                    }
+                    file.write(contents)
                 }
             }
         }
