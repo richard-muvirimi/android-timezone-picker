@@ -30,6 +30,28 @@ This library relies on files from different sources i.e
    
 These additional dependencies are managed and updated by gradle on building the project
 
+### Installation
+
+###### Step 1
+Add it in your root build.gradle at the end of repositories:
+
+```groovy
+allprojects {
+     repositories {
+         //...
+         maven { url 'https://jitpack.io' }
+     }
+ }
+```
+###### Step 2
+Add the dependency
+```groovy
+ dependencies {
+         implementation 'com.github.richard-muvirimi:android-timezone-picker:Tag'
+ }
+```
+You can get detailed setup instructions on [Jitpack.io](https://jitpack.io/#richard-muvirimi/android-timezone-picker)
+
 ### Usage
 
 A sample module is provided for reference, but for picking the timezone in an activity context
