@@ -42,7 +42,7 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = 'com.github.richard-muvirimi'
-                artifactId = 'com.android.timezonepicker'
+                artifactId = 'timezonepicker'
                 version = '1.0.3'
             }
         }
