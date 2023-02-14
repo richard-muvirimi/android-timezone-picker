@@ -1,106 +1,75 @@
-import org.ajoberstar.grgit.Grgit
-
 plugins {
     id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
-    id "org.ajoberstar.grgit"
     id "de.undercouch.download"
 }
 
-group = 'com.github.richard-muvirimi'
-version = '1.0.0'
-
 android {
-    compileSdkVersion 33
-    buildToolsVersion '33.0.0'
+    namespace 'com.tyganeutronics.timezonepicker'
+    compileSdk 33
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 33
+        minSdk 16
+        targetSdk 33
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
-    namespace 'com.android.timezonepicker'
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/src'
+    kotlinOptions {
+        jvmTarget = '11'
     }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+
+    api project(path: ':base-library')
+    implementation 'androidx.core:core-ktx:1.9.0'
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            release(MavenPublication) {
+publishing {
+    publications {
+        // Creates a Maven publication called "release".
+        release(MavenPublication) {
+
+            groupId = 'com.github.richard-muvirimi'
+            artifactId = 'library'
+            version = '1.0.1'
+
+            afterEvaluate {
                 from components.release
-                groupId = 'com.github.richard-muvirimi'
-                artifactId = 'timezonepicker'
-                version = '1.0.0'
             }
         }
     }
 }
 
-gradle.beforeProject { project ->
-    if ("$project".contains(":library")) {
-        File targetDir = new File(rootProject.rootDir, '/library/src/main')
+task downloadTimeZoneData {
 
-        // Clone Base Library
-        if (!(new File(targetDir, "res")).exists() || !(new File(targetDir, "src")).exists()) {
-            Grgit.clone {
-                dir = targetDir
-                uri = 'https://android.googlesource.com/platform/frameworks/opt/timezonepicker'
-            }
-        } else {
-            def grgit = Grgit.open(dir: targetDir)
-            grgit.fetch()
-            grgit.pull()
-            grgit.close()
-        }
-
-        // Alter layout resource files
-        File layoutDir = new File(rootProject.rootDir, '/library/src/main/res/layout')
-
-        if (layoutDir.exists()) {
-            layoutDir.listFiles().each { file ->
-                if (file.isFile()) {
-                    def contents = file.getText()
-
-                    contents = contents.replaceAll("(\\<\\/?)TextView(\\>?)", '$1androidx.appcompat.widget.AppCompatTextView$2')
-                    contents = contents.replaceAll("(\\<\\/?)LinearLayout(\\>?)", '$1androidx.appcompat.widget.LinearLayoutCompat$2')
-                    contents = contents.replaceAll("(\\<\\/?)AutoCompleteTextView(\\>?)", '$1androidx.appcompat.widget.AppCompatAutoCompleteTextView$2')
-                    contents = contents.replaceAll("(\\<\\/?)ImageButton(\\>?)", '$1androidx.appcompat.widget.AppCompatImageButton$2')
-
-                    // remove background
-                    contents = contents.replaceAll("(\\<ListView[\\w\\W]*\\n)\\s*android:background.*\\s([\\w\\W]*\\<\\/ListView\\>)", '$1$2')
-
-                    file.write(contents)
-                }
-            }
-        }
-
-        // Download timezone data files
-        download.run {
-            src([
-                    'https://raw.githubusercontent.com/eggert/tz/main/backward',
-                    'https://raw.githubusercontent.com/eggert/tz/main/zone.tab'
-            ])
-            dest new File(rootProject.rootDir, '/library/src/main/assets')
-            onlyIfModified true
-        }
+    // Download timezone data files
+    download.run {
+        src([
+                'https://raw.githubusercontent.com/eggert/tz/main/backward',
+                'https://raw.githubusercontent.com/eggert/tz/main/zone.tab'
+        ])
+        dest new File(rootProject.rootDir, '/library/src/main/assets')
+        onlyIfModified true
+        useETag 'all'
     }
+
 }
+
+preBuild.dependsOn downloadTimeZoneData

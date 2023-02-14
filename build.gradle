@@ -1,23 +1,17 @@
-import org.ajoberstar.grgit.Grgit
-
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = '1.8.0'
+    ext.kotlin_version = '1.8.10'
 
     repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
         mavenLocal()
         mavenCentral()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
-        classpath 'com.google.gms:google-services:4.3.14'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
+        classpath 'com.android.tools.build:gradle:7.4.1'
+        classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.ajoberstar.grgit:grgit-gradle:5.0.0"
         classpath "de.undercouch:gradle-download-task:5.3.0"
     }
 }
@@ -31,11 +25,6 @@ allprojects {
     }
 }
 
-ext.kotlin_version = '1.8.0'
-
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-
-
