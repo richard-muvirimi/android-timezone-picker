@@ -48,7 +48,7 @@ publishing {
 
             groupId = 'com.github.richard-muvirimi'
             artifactId = 'library'
-            version = '1.0.2'
+            version = '1.0.3'
 
             afterEvaluate {
                 from components.release
