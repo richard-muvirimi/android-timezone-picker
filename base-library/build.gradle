@@ -1,0 +1,53 @@
+import org.ajoberstar.grgit.Grgit
+
+plugins {
+    id 'com.android.library'
+    id "org.ajoberstar.grgit"
+}
+
+android {
+    compileSdkVersion 33
+    buildToolsVersion '33.0.1'
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 33
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/src'
+    }
+}
+
+dependencies {
+
+}
+
+task cloneBaseLibrary {
+    File targetDir = new File(rootProject.rootDir, '/base-library/src/main')
+
+    // Clone Base Library
+    if (!(new File(targetDir, "res")).exists() || !(new File(targetDir, "src")).exists()) {
+        Grgit.clone {
+            dir = targetDir
+            uri = 'https://android.googlesource.com/platform/frameworks/opt/timezonepicker'
+        }
+    } else {
+        def grgit = Grgit.open(dir: targetDir)
+        grgit.fetch()
+        grgit.pull()
+        grgit.close()
+    }
+}
+
+preBuild.dependsOn cloneBaseLibrary
