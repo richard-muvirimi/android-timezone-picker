@@ -5,10 +5,10 @@ plugins {
 
 android {
     compileSdk 33
-    buildToolsVersion '33.0.0'
+    buildToolsVersion '33.0.1'
 
     defaultConfig {
-        applicationId "com.rich4rdmuvirimi.timezonepicker"
+        applicationId "com.tyganeutronics.timezonepicker.sample"
         minSdk 16
         targetSdk 33
         versionCode 1
@@ -26,23 +26,22 @@ android {
     compileOptions {
         coreLibraryDesugaringEnabled true
 
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
-    namespace 'com.rich4rdmuvirimi.timezonepicker'
 }
 
 dependencies {
 
     //desugaring
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.2'
 
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(path: ':library')
 
