@@ -16,6 +16,10 @@ takes into account daylight savings.
 |------------------------------------------------------------|------------------------------------------------------------|------------------------------------------------------------|
 | <img src=".github/assets/screenshot-2.jpg" width="280px" > | <img src=".github/assets/screenshot-1.jpg" width="280px" > | <img src=".github/assets/screenshot-3.jpg" width="280px" > |
 
+### Demo Application
+
+[<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/>](https://play.google.com/store/apps/details?id=com.tyganeutronics.timezonepicker.sample&utm_source=github&utm_campaign=github&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1)
+
 ### Building Overview
 
 This library relies on files from different sources i.e
@@ -37,18 +41,18 @@ Add it in your root build.gradle at the end of repositories:
 
 ```groovy
 allprojects {
-     repositories {
-         //...
-         maven { url 'https://jitpack.io' }
-     }
- }
+    repositories {
+        //...
+        maven { url 'https://jitpack.io' }
+    }
+}
 ```
 ###### Step 2
 Add the dependency
 ```groovy
- dependencies {
-         implementation 'com.github.richard-muvirimi:android-timezone-picker:Tag'
- }
+dependencies {
+    implementation 'com.github.richard-muvirimi:android-timezone-picker:Tag'
+}
 ```
 You can get detailed setup instructions on [Jitpack.io](https://jitpack.io/#richard-muvirimi/android-timezone-picker)
 
@@ -77,7 +81,7 @@ timeZonePickerDialog.show(fragmentManager, TimeZonePickerDialog.TAG)
 and listening for the result
 
 ```kotlin
-  override fun onTimeZoneSet(tzi: TimeZoneInfo?) {
+override fun onTimeZoneSet(tzi: TimeZoneInfo?) {
     if (tzi != null) {
         findViewById<AppCompatTextView>(R.id.txt_timezone).text = tzi.mDisplayName
     }
