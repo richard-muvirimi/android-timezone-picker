@@ -88,13 +88,23 @@ override fun onTimeZoneSet(tzi: TimeZoneInfo?) {
 }
 ```
 
+Make sure you import your classes from `import com.tyganeutronics.timezonepicker.*`
+
+```kotlin
+import com.tyganeutronics.timezonepicker.TimeZoneInfo
+import com.tyganeutronics.timezonepicker.TimeZonePickerAppCompatFragment
+import com.tyganeutronics.timezonepicker.TimeZonePickerBaseFragment
+import com.tyganeutronics.timezonepicker.TimeZonePickerBottomSheetFragment
+import com.tyganeutronics.timezonepicker.TimeZonePickerFragment
+```
+
 ### Contribution
 
 Fork and send a pull request 😉, or an issue...
 
 ### License
 
-```
+```license
 Copyright 2022 Richard Muvirimi
 
 Licensed under the Apache License, Version 2.0 (the "License");
