@@ -58,27 +58,56 @@ You can get detailed setup instructions on [Jitpack.io](https://jitpack.io/#rich
 
 ### Usage
 
-A sample module is provided for reference, but for picking the timezone in an activity context
-implementing `TimeZonePickerDialog.OnTimeZoneSetListener`
+###### Step 1
+Before creating a timezone picker fragment, you need to pass it arguments as defined below
 
 ```kotlin
 val args = Bundle()
 args.putLong(
-    TimeZonePickerDialog.BUNDLE_START_TIME_MILLIS,
+    TimeZonePickerBaseFragment.BUNDLE_START_TIME_MILLIS,
     ZonedDateTime.now().toEpochSecond() * 1000
 )
 args.putString(
-    TimeZonePickerDialog.BUNDLE_TIME_ZONE,
+    TimeZonePickerBaseFragment.BUNDLE_TIME_ZONE,
     ZonedDateTime.now().zone.id
 )
-
-val timeZonePickerDialog = TimeZonePickerDialog()
-timeZonePickerDialog.arguments = args
-timeZonePickerDialog.setOnTimeZoneSetListener(this)
-timeZonePickerDialog.show(fragmentManager, TimeZonePickerDialog.TAG)
 ```
 
-and listening for the result
+###### Step 2
+Then create one of three timezone picker instances:
+
+1. Normal Dialog Fragment
+
+    ```kotlin
+    val timeZonePickerDialog = TimeZonePickerAppCompatFragment()
+    timeZonePickerDialog.arguments = args
+    timeZonePickerDialog.setOnTimeZoneSetListener(this)
+    timeZonePickerDialog.show(fragmentManager, TimeZonePickerAppCompatFragment.TAG)
+    ```
+
+2. Bottom Sheet Dialog Fragment
+
+    ```kotlin
+    val timeZonePickerDialog = TimeZonePickerBottomSheetFragment()
+    timeZonePickerDialog.arguments = args
+    timeZonePickerDialog.setOnTimeZoneSetListener(this)
+    timeZonePickerDialog.show(fragmentManager, TimeZonePickerBottomSheetFragment.TAG)
+    ```
+
+3. Normal Fragment
+
+    ```kotlin
+    val timeZonePickerDialog = TimeZonePickerFragment()
+    timeZonePickerDialog.arguments = args
+    timeZonePickerDialog.setOnTimeZoneSetListener(this)
+    
+    val transaction = fragmentManager.beginTransaction()
+    transaction.replace(R.id.fragment_container, fragment)
+    transaction.commit()
+    ```
+
+###### Step 3
+and then listening for the result
 
 ```kotlin
 override fun onTimeZoneSet(tzi: TimeZoneInfo?) {
