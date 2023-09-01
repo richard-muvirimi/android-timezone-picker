@@ -4,15 +4,14 @@ plugins {
 }
 
 android {
-    compileSdk 33
-    buildToolsVersion '33.0.2'
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.tyganeutronics.timezonepicker.sample"
         minSdk 16
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        targetSdk 34
+        versionCode 2
+        versionName "1.0.1"
 
         multiDexEnabled true
     }
@@ -32,6 +31,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17
     }
+    namespace 'com.tyganeutronics.timezonepicker.sample'
 }
 
 dependencies {
@@ -39,9 +39,9 @@ dependencies {
     //desugaring
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
 
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(path: ':library')
 
