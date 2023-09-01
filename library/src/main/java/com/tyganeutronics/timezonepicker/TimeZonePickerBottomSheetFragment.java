@@ -9,6 +9,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 public class TimeZonePickerBottomSheetFragment extends TimeZonePickerBaseFragment {
 
+    public final static String TAG = "TimeZonePickerBottomSheetFragment";
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = new BottomSheetDialog(getActivity(), getTheme());
