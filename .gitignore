@@ -34,3 +34,10 @@ proguard/
 
 # Log Files
 *.log
+
+/*/release/
+
+# Built application files
+*.apk
+*.ap_
+*.aab
