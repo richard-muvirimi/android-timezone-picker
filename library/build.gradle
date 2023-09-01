@@ -7,11 +7,11 @@ plugins {
 
 android {
     namespace 'com.tyganeutronics.timezonepicker'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk 16
-        targetSdk 33
+        targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -35,10 +35,10 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
 
     api project(path: ':base-library')
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
 }
 
 publishing {
@@ -51,13 +51,13 @@ publishing {
             version = '1.0.4'
 
             afterEvaluate {
-                from components.release
+                from components.findByName('release')
             }
         }
     }
 }
 
-task downloadTimeZoneData {
+tasks.register('downloadTimeZoneData') {
 
     // Download timezone data files
     download.run {
