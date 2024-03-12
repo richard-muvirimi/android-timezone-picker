@@ -59,7 +59,7 @@ publishing {
 
             groupId = 'com.github.richard-muvirimi'
             artifactId = 'base-library'
-            version = '1.0.1'
+            version = '1.0.5'
 
             afterEvaluate {
                 from components.findByName('release')
