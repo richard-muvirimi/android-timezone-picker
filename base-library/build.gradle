@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'maven-publish'
+    id 'org.ajoberstar.grgit'
 }
 
 android {
@@ -30,6 +31,26 @@ android {
 dependencies {
 
 }
+
+tasks.register("updateGitSubmodules") {
+    doFirst {
+        description 'Syncs git submodules'
+        exec {
+            workingDir "${rootProject.rootDir.absolutePath}"
+            commandLine 'git', 'submodule', 'sync', '--recursive'
+        }
+    }
+    doLast {
+        description 'Updates (and inits) git submodules'
+        exec {
+            workingDir "${rootProject.rootDir.absolutePath}"
+            commandLine 'git', 'submodule', 'update', '--init', '--recursive'
+        }
+        println "Project submodules updated!"
+    }
+}
+
+preBuild.dependsOn updateGitSubmodules
 
 publishing {
     publications {
