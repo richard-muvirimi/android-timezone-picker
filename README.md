@@ -48,10 +48,11 @@ allprojects {
 }
 ```
 ###### Step 2
-Add the dependency
+Add both dependencies
 ```groovy
 dependencies {
-    implementation 'com.github.richard-muvirimi:android-timezone-picker:Tag'
+    implementation 'com.github.richard-muvirimi:timezonepicker:Tag'
+    implementation 'com.github.richard-muvirimi:com.android.timezonepicker:Tag'
 }
 ```
 You can get detailed setup instructions on [Jitpack.io](https://jitpack.io/#richard-muvirimi/android-timezone-picker)

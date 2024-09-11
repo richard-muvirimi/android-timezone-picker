@@ -1,7 +1,5 @@
 plugins {
     id 'com.android.library'
-    id 'maven-publish'
-    id 'org.ajoberstar.grgit'
 }
 
 android {
@@ -9,7 +7,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 34
     }
     buildTypes {
@@ -37,33 +35,25 @@ tasks.register("updateGitSubmodules") {
         description 'Syncs git submodules'
         exec {
             workingDir "${rootProject.rootDir.absolutePath}"
-            commandLine 'git', 'submodule', 'sync', '--recursive'
+            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                commandLine 'wsl', 'bash', '-c', '"git submodule sync --recursive"'
+            } else {
+                commandLine 'git', 'submodule', 'sync', '--recursive'
+            }
         }
     }
     doLast {
         description 'Updates (and inits) git submodules'
         exec {
             workingDir "${rootProject.rootDir.absolutePath}"
-            commandLine 'git', 'submodule', 'update', '--init', '--recursive'
+            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                commandLine 'wsl', 'bash', '-c', '"git submodule update --init --recursive"'
+            } else {
+                commandLine 'git', 'submodule', 'update', '--init', '--recursive'
+            }
         }
         println "Project submodules updated!"
     }
 }
 
 preBuild.dependsOn updateGitSubmodules
-
-publishing {
-    publications {
-        // Creates a Maven publication called "release".
-        release(MavenPublication) {
-
-            groupId = 'com.github.richard-muvirimi'
-            artifactId = 'base-library'
-            version = '1.0.5'
-
-            afterEvaluate {
-                from components.findByName('release')
-            }
-        }
-    }
-}

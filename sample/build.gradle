@@ -8,10 +8,10 @@ android {
 
     defaultConfig {
         applicationId "com.tyganeutronics.timezonepicker.sample"
-        minSdk 16
+        minSdk 21
         targetSdk 34
         versionCode 3
-        versionName "1.0.5"
+        versionName "$library_version"
 
         multiDexEnabled true
     }
@@ -37,11 +37,11 @@ android {
 dependencies {
 
     //desugaring
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
 
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(path: ':library')
 
