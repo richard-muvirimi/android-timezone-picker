@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = '1.9.23'
+    ext.kotlin_version = '2.0.20'
+    ext.library_version = '1.0.5'
 
     repositories {
         mavenLocal()
@@ -8,12 +9,11 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.0'
-        classpath 'com.google.gms:google-services:4.4.1'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
+        classpath 'com.android.tools.build:gradle:8.5.2'
+        classpath 'com.google.gms:google-services:4.4.2'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "de.undercouch:gradle-download-task:5.3.0"
-        classpath 'org.ajoberstar:gradle-git:1.6.0'
     }
 }
 
@@ -23,6 +23,37 @@ allprojects {
         mavenCentral()
         maven { url 'https://jitpack.io' }
         google()
+    }
+
+    version = "$library_version"
+    group = 'com.github.richard-muvirimi'
+}
+
+subprojects {
+    // Deploying multiple modules
+    // https://stackoverflow.com/a/48024281/5956589
+    apply plugin: 'maven-publish'
+
+    ext.getArtifactId = { name ->
+        if (name.contains('base-library')) {
+            return 'com.android.timezonepicker'
+        } else {
+            return 'timezonepicker'
+        }
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId project.group
+                artifactId getArtifactId(project.name)
+                version project.version
+
+                afterEvaluate {
+                    from components.findByName('release')
+                }
+            }
+        }
     }
 }
 
