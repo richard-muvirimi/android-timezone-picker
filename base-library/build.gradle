@@ -30,30 +30,32 @@ dependencies {
 
 }
 
-tasks.register("updateGitSubmodules") {
-    doFirst {
-        description 'Syncs git submodules'
-        exec {
-            workingDir "${rootProject.rootDir.absolutePath}"
-            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                commandLine 'wsl', 'bash', '-c', '"git submodule sync --recursive"'
-            } else {
-                commandLine 'git', 'submodule', 'sync', '--recursive'
+if (!System.getenv("JITPACK")) {
+    tasks.register("updateGitSubmodules") {
+        doFirst {
+            description 'Syncs git submodules'
+            exec {
+                workingDir "${rootProject.rootDir.absolutePath}"
+                if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                    commandLine 'wsl', 'bash', '-c', '"git submodule sync --recursive"'
+                } else {
+                    commandLine 'git', 'submodule', 'sync', '--recursive'
+                }
             }
         }
-    }
-    doLast {
-        description 'Updates (and inits) git submodules'
-        exec {
-            workingDir "${rootProject.rootDir.absolutePath}"
-            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                commandLine 'wsl', 'bash', '-c', '"git submodule update --init --recursive"'
-            } else {
-                commandLine 'git', 'submodule', 'update', '--init', '--recursive'
+        doLast {
+            description 'Updates (and inits) git submodules'
+            exec {
+                workingDir "${rootProject.rootDir.absolutePath}"
+                if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                    commandLine 'wsl', 'bash', '-c', '"git submodule update --init --recursive"'
+                } else {
+                    commandLine 'git', 'submodule', 'update', '--init', '--recursive'
+                }
             }
+            println "Project submodules updated!"
         }
-        println "Project submodules updated!"
     }
-}
 
-preBuild.dependsOn updateGitSubmodules
+    preBuild.dependsOn updateGitSubmodules
+}
