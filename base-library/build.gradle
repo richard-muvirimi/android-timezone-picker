@@ -4,11 +4,11 @@ plugins {
 
 android {
     namespace 'com.android.timezonepicker'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 34
+        targetSdkVersion 35
     }
     buildTypes {
         release {
