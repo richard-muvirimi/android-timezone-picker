@@ -1,5 +1,7 @@
 package com.tyganeutronics.timezonepicker.sample
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
@@ -12,6 +14,7 @@ import com.tyganeutronics.timezonepicker.TimeZonePickerBaseFragment
 import com.tyganeutronics.timezonepicker.TimeZonePickerBottomSheetFragment
 import com.tyganeutronics.timezonepicker.TimeZonePickerFragment
 import java.time.ZonedDateTime
+import androidx.core.net.toUri
 
 class MainActivity : AppCompatActivity(), View.OnClickListener,
     TimeZonePickerBaseFragment.OnTimeZoneSetListener {
@@ -22,6 +25,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
 
         findViewById<AppCompatButton>(R.id.btn_bottomsheet_picker).setOnClickListener(this)
         findViewById<AppCompatButton>(R.id.btn_dialog_picker).setOnClickListener(this)
+        findViewById<AppCompatButton>(R.id.btn_privacy_policy).setOnClickListener(this)
 
         findViewById<FrameLayout>(R.id.fragment_container).post {
             val fragment = TimeZonePickerFragment()
@@ -55,6 +59,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
                     timeZonePickerDialog.arguments = this.fragmentArguments()
                     timeZonePickerDialog.setOnTimeZoneSetListener(this)
                     timeZonePickerDialog.show(fragmentManager, TimeZonePickerAppCompatFragment.TAG)
+                }
+                R.id.btn_privacy_policy -> {
+                    val intent = Intent()
+                    intent.action = Intent.ACTION_VIEW
+                    intent.data = getString(R.string.privacy_policy_url).toUri()
+                    startActivity(intent)
                 }
             }
         }

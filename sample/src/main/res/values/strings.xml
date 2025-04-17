@@ -8,4 +8,7 @@
     <string name="title_fragment" translatable="false">Fragment</string>
     <string name="title_dialog" translatable="false">Dialog</string>
 
+    <string name="privacy_policy" translatable="false">Privacy Policy</string>
+    <string name="privacy_policy_url" translatable="false">https://site.tyganeutronics.com/timezone-picker-library-privacy-policy/</string>
+
 </resources>
