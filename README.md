@@ -34,6 +34,26 @@ This library relies on files from different sources i.e
    
 These additional dependencies are managed and updated by gradle on building the project
 
+### Automated Updates & Releases
+
+This library is automatically kept up-to-date through an automated monthly release system:
+
+#### 🤖 **Monthly Release Process**
+- **1st of every month at midnight UTC**: Version bump check runs
+- **1st of every month at 1:00 AM UTC**: Automatic release creation
+
+#### 📅 **Release Schedule**
+- New releases are created **monthly** if no release was made in the previous 30 days
+- Version numbers follow semantic versioning (e.g., 1.0.8 → 1.0.9)
+- Each release includes the latest timezone data from [IANA Time Zone Database](https://github.com/eggert/tz)
+
+#### 🔄 **What Gets Updated**
+- **Timezone data files**: Downloaded fresh from the official IANA database
+- **Version number**: Automatically incremented patch version
+- **JitPack build**: Triggered automatically for immediate availability
+
+This ensures you always have access to the most current timezone information without waiting for manual updates. Simply update to the latest version tag to get the freshest timezone data.
+
 ### Installation
 
 ###### Step 1
@@ -49,23 +69,11 @@ allprojects {
 ```
 
 ###### Step 2
-Add the dependency (choose one option):
+Add the dependency:
 
-**Option 1: Main Library Only (Recommended)**
 ```groovy
 dependencies {
     implementation 'com.github.richard-muvirimi:android-timezone-picker:Tag'
-}
-```
-
-**Option 2: Specific Module**
-```groovy
-dependencies {
-    // For the enhanced library with extra features
-    implementation 'com.github.richard-muvirimi.android-timezone-picker:library:Tag'
-    
-    // OR for just the base Google timezone picker
-    implementation 'com.github.richard-muvirimi.android-timezone-picker:base-library:Tag'
 }
 ```
 

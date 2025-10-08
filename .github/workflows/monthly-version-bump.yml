@@ -1,0 +1,105 @@
+name: Monthly Version Bump Check
+
+on:
+  schedule:
+    # Run on the 1st day of every month at 00:00 UTC (midnight)
+    - cron: '0 0 1 * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  check-and-bump-version:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Configure Git
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+    - name: Get current version
+      id: current_version
+      run: |
+        VERSION=$(grep -oP "ext\.library_version = '\K[^']*" build.gradle)
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Current version: $VERSION"
+
+    - name: Check for recent tags
+      id: tag_check
+      run: |
+        # Get the date of the most recent tag
+        LATEST_TAG_DATE=$(git for-each-ref --sort=-creatordate --format='%(creatordate:unix)' refs/tags | head -1)
+        
+        if [ -z "$LATEST_TAG_DATE" ]; then
+          LATEST_TAG_DATE=0
+          echo "No tags found in repository"
+        else
+          echo "Latest tag date: $(date -d @$LATEST_TAG_DATE)"
+        fi
+        
+        CURRENT_DATE=$(date +%s)
+        THIRTY_DAYS_AGO=$((CURRENT_DATE - 30*24*3600))
+        
+        echo "30 days ago: $(date -d @$THIRTY_DAYS_AGO)"
+        
+        if [ "$LATEST_TAG_DATE" -lt "$THIRTY_DAYS_AGO" ]; then
+          echo "needs_bump=true" >> $GITHUB_OUTPUT
+          echo "No tag created in the last 30 days - version bump needed"
+        else
+          echo "needs_bump=false" >> $GITHUB_OUTPUT
+          echo "Tag was created recently (within 30 days) - no bump needed"
+        fi
+
+    - name: Bump version
+      id: bump_version
+      if: steps.tag_check.outputs.needs_bump == 'true'
+      run: |
+        CURRENT_VERSION="${{ steps.current_version.outputs.version }}"
+        echo "Current version: $CURRENT_VERSION"
+        
+        # Extract version parts (assuming format like 1.2.3)
+        if [[ $CURRENT_VERSION =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+          MAJOR=${BASH_REMATCH[1]}
+          MINOR=${BASH_REMATCH[2]}
+          PATCH=${BASH_REMATCH[3]}
+          
+          # Increment patch version
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+        else
+          echo "Error: Version format not recognized: $CURRENT_VERSION"
+          exit 1
+        fi
+        
+        echo "New version: $NEW_VERSION"
+        echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+        
+        # Update build.gradle
+        sed -i "s/ext\.library_version = '$CURRENT_VERSION'/ext.library_version = '$NEW_VERSION'/g" build.gradle
+        
+        # Verify the change
+        grep "ext\.library_version" build.gradle
+
+    - name: Commit and push changes
+      if: steps.tag_check.outputs.needs_bump == 'true'
+      run: |
+        git add build.gradle
+        
+        COMMIT_MSG="chore: monthly version bump to ${{ steps.bump_version.outputs.new_version }}"
+        
+        git commit -m "$COMMIT_MSG"
+        git push origin ${{ github.ref_name }}
+
+    - name: Summary
+      if: always()
+      run: |
+        if [ "${{ steps.tag_check.outputs.needs_bump }}" != "true" ]; then
+          echo "✅ Tag was created recently, no version bump needed"
+        else
+          echo "✅ Version bumped to ${{ steps.bump_version.outputs.new_version }} (monthly maintenance bump)"
+        fi

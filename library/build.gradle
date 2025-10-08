@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id "de.undercouch.download"
+    id 'maven-publish'
 }
 
 android {
@@ -27,6 +28,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
     }
 }
 
@@ -55,3 +62,17 @@ tasks.register('downloadTimeZoneData') {
 }
 
 preBuild.dependsOn downloadTimeZoneData
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.github.richard-muvirimi'
+            artifactId = 'android-timezone-picker'
+            version = project.version
+
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
+}

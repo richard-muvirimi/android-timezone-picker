@@ -1,6 +1,10 @@
 name: Auto Release on Version Change
 
 on:
+  schedule:
+    # Run on the 1st day of every month at 01:00 UTC
+    - cron: '0 1 1 * *'
+  workflow_dispatch: # Allow manual triggering
   push:
     branches: [ release ]
     paths:
@@ -124,20 +128,16 @@ jobs:
           
           ### JitPack Usage
           
-          **Main Library (with extra features):**
           ```gradle
           implementation 'com.github.richard-muvirimi:android-timezone-picker:v${{ steps.current_version.outputs.version }}'
           ```
           
-          **Base Library (git submodule):**
-          ```gradle  
-          implementation 'com.github.richard-muvirimi.android-timezone-picker:base-timezonepicker:v${{ steps.current_version.outputs.version }}'
-          ```
+          This library includes:
+          - Enhanced timezone picker components (AppCompat, BottomSheet, Fragment)
+          - Google's original timezone picker (base functionality)
+          - Latest IANA timezone data
           
-          **Full Library (recommended):**
-          ```gradle
-          implementation 'com.github.richard-muvirimi.android-timezone-picker:timezonepicker:v${{ steps.current_version.outputs.version }}'
-          ```
+          All components are available from the single dependency above.
         draft: false
         prerelease: false
 
