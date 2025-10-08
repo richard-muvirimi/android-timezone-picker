@@ -10,6 +10,7 @@
 # Built application files
 *.apk
 *.ap_
+*.aab
 
 # Files for the Dalvik VM
 *.dex
@@ -36,8 +37,3 @@ proguard/
 *.log
 
 /*/release/
-
-# Built application files
-*.apk
-*.ap_
-*.aab
