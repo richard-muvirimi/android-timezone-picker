@@ -31,8 +31,8 @@ allprojects {
 
 // Make library module the default for JitPack
 if (System.getenv("JITPACK")) {
-    // JitPack should only build and publish the main library module
-    defaultTasks 'library:publishToMavenLocal'
+    // Publish all module publications to Maven Local so JitPack can serve them
+    defaultTasks 'publishToMavenLocal'
 }
 
 tasks.register('clean', Delete) {

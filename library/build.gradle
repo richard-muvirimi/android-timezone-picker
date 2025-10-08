@@ -54,7 +54,8 @@ tasks.register('downloadTimeZoneData') {
                 'https://raw.githubusercontent.com/eggert/tz/main/backward',
                 'https://raw.githubusercontent.com/eggert/tz/main/zone.tab'
         ])
-        dest new File(rootProject.rootDir, '/library/src/main/assets')
+        // Use a project-relative path to avoid Windows absolute path issues
+        dest new File(project.projectDir, 'src/main/assets')
         onlyIfModified true
         useETag 'all'
     }
