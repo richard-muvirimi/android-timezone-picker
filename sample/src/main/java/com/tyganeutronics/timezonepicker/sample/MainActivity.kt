@@ -4,10 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.tyganeutronics.timezonepicker.TimeZoneInfo
 import com.tyganeutronics.timezonepicker.TimeZonePickerAppCompatFragment
 import com.tyganeutronics.timezonepicker.TimeZonePickerBaseFragment
@@ -15,6 +18,9 @@ import com.tyganeutronics.timezonepicker.TimeZonePickerBottomSheetFragment
 import com.tyganeutronics.timezonepicker.TimeZonePickerFragment
 import java.time.ZonedDateTime
 import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 
 class MainActivity : AppCompatActivity(), View.OnClickListener,
     TimeZonePickerBaseFragment.OnTimeZoneSetListener {
@@ -36,6 +42,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
             transaction.replace(R.id.fragment_container, fragment)
             transaction.commit()
         }
+
+        applyWindowInsets()
 
     }
 
@@ -104,6 +112,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
                     }
                 }
             }
+        }
+    }
+
+    private fun applyWindowInsets() {
+
+        // https://developer.android.com/develop/ui/views/layout/edge-to-edge#kotlin
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById<ScrollView>(R.id.layout_container)) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                leftMargin = insets.left
+                topMargin = insets.top
+                bottomMargin = insets.bottom
+                rightMargin = insets.right
+            }
+
+            WindowInsetsCompat.CONSUMED
         }
     }
 }

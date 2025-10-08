@@ -4,11 +4,11 @@ plugins {
 
 android {
     namespace 'com.android.timezonepicker'
-    compileSdk 35
+    compileSdkVersion 36
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 35
+        targetSdkVersion 36
     }
     buildTypes {
         release {
@@ -36,22 +36,14 @@ if (!System.getenv("JITPACK")) {
             description 'Syncs git submodules'
             exec {
                 workingDir "${rootProject.rootDir.absolutePath}"
-                if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                    commandLine 'wsl', 'bash', '-c', '"git submodule sync --recursive"'
-                } else {
-                    commandLine 'git', 'submodule', 'sync', '--recursive'
-                }
+                commandLine 'git', 'submodule', 'sync', '--recursive'
             }
         }
         doLast {
             description 'Updates (and inits) git submodules'
             exec {
                 workingDir "${rootProject.rootDir.absolutePath}"
-                if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                    commandLine 'wsl', 'bash', '-c', '"git submodule update --init --recursive"'
-                } else {
-                    commandLine 'git', 'submodule', 'update', '--init', '--recursive'
-                }
+                commandLine 'git', 'submodule', 'update', '--init', '--recursive'
             }
             println "Project submodules updated!"
         }
