@@ -1,6 +1,6 @@
 # Android Timezone Picker
 
-![Release](https://jitpack.io/v/richard-muvirimi/android-timezone-picker.svg)
+[![Release](https://jitpack.io/v/richard-muvirimi/android-timezone-picker.svg)](https://jitpack.io/#richard-muvirimi/android-timezone-picker)
 
 An android timezone picker implementation that is based
 on [Google's](https://android.googlesource.com/platform/frameworks/opt/timezonepicker)
@@ -47,15 +47,31 @@ allprojects {
     }
 }
 ```
+
 ###### Step 2
-Add both dependencies
+Add the dependency (choose one option):
+
+**Option 1: Main Library Only (Recommended)**
 ```groovy
 dependencies {
-    implementation 'com.github.richard-muvirimi:timezonepicker:Tag'
-    implementation 'com.github.richard-muvirimi:com.android.timezonepicker:Tag'
+    implementation 'com.github.richard-muvirimi:android-timezone-picker:Tag'
 }
 ```
-You can get detailed setup instructions on [Jitpack.io](https://jitpack.io/#richard-muvirimi/android-timezone-picker)
+
+**Option 2: Specific Module**
+```groovy
+dependencies {
+    // For the enhanced library with extra features
+    implementation 'com.github.richard-muvirimi.android-timezone-picker:library:Tag'
+    
+    // OR for just the base Google timezone picker
+    implementation 'com.github.richard-muvirimi.android-timezone-picker:base-library:Tag'
+}
+```
+
+**Replace `Tag` with the latest version number.**
+
+You can get detailed setup instructions and see all available versions on [JitPack](https://jitpack.io/#richard-muvirimi/android-timezone-picker)
 
 ### Usage
 
