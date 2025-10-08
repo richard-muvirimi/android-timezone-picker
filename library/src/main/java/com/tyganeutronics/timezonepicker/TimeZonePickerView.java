@@ -14,7 +14,7 @@ public class TimeZonePickerView extends com.android.timezonepicker.TimeZonePicke
 
     private ImageButton mClearButton;
 
-    public TimeZonePickerView(Context context, AttributeSet attrs){
+    public TimeZonePickerView(Context context, AttributeSet attrs) {
         super(context, attrs, "GMT", System.currentTimeMillis(), null, false);
     }
 

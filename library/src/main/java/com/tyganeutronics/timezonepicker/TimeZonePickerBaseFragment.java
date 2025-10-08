@@ -26,11 +26,11 @@ public class TimeZonePickerBaseFragment extends TimeZonePickerDialog implements 
     public interface OnTimeZoneSetListener extends TimeZonePickerDialog.OnTimeZoneSetListener {
         @Override
         @Deprecated
-        default void onTimeZoneSet(com.android.timezonepicker.TimeZoneInfo tzi){
-            onTimeZoneSet( (TimeZoneInfo) tzi);
+        default void onTimeZoneSet(com.android.timezonepicker.TimeZoneInfo tzi) {
+            onTimeZoneSet((TimeZoneInfo) tzi);
         }
 
-       void onTimeZoneSet(TimeZoneInfo tzi);
+        void onTimeZoneSet(TimeZoneInfo tzi);
     }
 
     public void setOnTimeZoneSetListener(TimeZonePickerBaseFragment.OnTimeZoneSetListener l) {

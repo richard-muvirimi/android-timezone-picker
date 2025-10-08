@@ -23,5 +23,5 @@ public class TimeZoneInfo extends com.android.timezonepicker.TimeZoneInfo {
     public TimeZoneInfo(TimeZone tz, String country) {
         super(tz, country);
     }
-    
+
 }

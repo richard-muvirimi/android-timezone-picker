@@ -1,7 +1,6 @@
 package com.tyganeutronics.timezonepicker.sample
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -10,17 +9,16 @@ import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import com.tyganeutronics.timezonepicker.TimeZoneInfo
 import com.tyganeutronics.timezonepicker.TimeZonePickerAppCompatFragment
 import com.tyganeutronics.timezonepicker.TimeZonePickerBaseFragment
 import com.tyganeutronics.timezonepicker.TimeZonePickerBottomSheetFragment
 import com.tyganeutronics.timezonepicker.TimeZonePickerFragment
 import java.time.ZonedDateTime
-import androidx.core.net.toUri
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
 
 class MainActivity : AppCompatActivity(), View.OnClickListener,
     TimeZonePickerBaseFragment.OnTimeZoneSetListener {
@@ -61,6 +59,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
                         TimeZonePickerBottomSheetFragment.TAG
                     )
                 }
+
                 R.id.btn_dialog_picker -> {
 
                     val timeZonePickerDialog = TimeZonePickerAppCompatFragment()
@@ -68,6 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,
                     timeZonePickerDialog.setOnTimeZoneSetListener(this)
                     timeZonePickerDialog.show(fragmentManager, TimeZonePickerAppCompatFragment.TAG)
                 }
+
                 R.id.btn_privacy_policy -> {
                     val intent = Intent()
                     intent.action = Intent.ACTION_VIEW
