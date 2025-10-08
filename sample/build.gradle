@@ -10,7 +10,7 @@ android {
         applicationId "com.tyganeutronics.timezonepicker.sample"
         minSdk 21
         targetSdk 36
-        versionCode 4
+        versionCode 5
         versionName "$library_version"
 
         multiDexEnabled true
