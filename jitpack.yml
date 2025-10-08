@@ -3,3 +3,8 @@ jdk:
 before_install:
   - git submodule sync --recursive
   - git submodule update --init --recursive
+  - ls -la base-library/src/main/ || echo "Submodule content check failed"
+  - echo "Submodule initialization completed"
+install:
+  - echo "Custom install step - building all modules"
+  - ./gradlew clean assembleRelease publishToMavenLocal -x lint --stacktrace

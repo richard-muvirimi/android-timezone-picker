@@ -29,14 +29,13 @@ allprojects {
     group = 'com.github.richard-muvirimi'
 }
 
-subprojects {
-    // Deploying multiple modules
-    // https://stackoverflow.com/a/48024281/5956589
+// Configure publishing for JitPack - only for library modules
+configure(subprojects.findAll { it.name in ['library', 'base-library'] }) {
     apply plugin: 'maven-publish'
 
     ext.getArtifactId = { name ->
         if (name.contains('base-library')) {
-            return 'com.android.timezonepicker'
+            return 'base-timezonepicker'
         } else {
             return 'timezonepicker'
         }
@@ -55,6 +54,12 @@ subprojects {
             }
         }
     }
+}
+
+// Make library module the default for JitPack
+if (System.getenv("JITPACK")) {
+    // JitPack should build the library module by default
+    defaultTasks 'library:publishToMavenLocal'
 }
 
 tasks.register('clean', Delete) {
